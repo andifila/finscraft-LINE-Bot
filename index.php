@@ -2,6 +2,7 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
+
 use \LINE\LINEBot\SignatureValidator as SignatureValidator;
 
 // load config
@@ -41,45 +42,20 @@ $app->post('/', function ($request, $response)
 	// init bot
 	$httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV['CHANNEL_ACCESS_TOKEN']);
 	$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV['CHANNEL_SECRET']]);
-
 	$data = json_decode($body, true);
 	foreach ($data['events'] as $event)
 	{
-		if ($event['type'] == 'message')
-		{
-			if($event['message']['type'] == 'text')
-			{
-				// send same message as reply to user
-				$result = $bot->replyText($event['replyToken'], $event['message']['text']);
-
-				// or we can use pushMessage() instead to send reply message
-				// $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event['message']['text']);
-				// $result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
-				
-				return $result->getHTTPStatus() . ' ' . $result->getRawBody();
-			}
-		}
-		else if($event == "confirm template")
-		{
-			$confirmTemplateBuilder = new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ConfirmTemplateBuilder(
-			   "apakah gw ganteng?",
-			   [
-			   new \LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('Ya',"/ya"),
-			   new \LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('Tidak','/tidak'),
-			   ]
-			   );
-			$templateMessage = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder('nama template', $confirmTemplateBuilder);
-			$result = $bot->replyMessage($event['replyToken'], $templateMessage);
-			return $result->getHTTPStatus() . ' ' . $result->getRawBody();
-		}
-		else if(strtolower($event) == 'halo')
+		$userMessage = $event['message']['text'];
+		if(strtolower($userMessage) == 'halo')
 		{
 			$message = "Halo juga";
             $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($message);
 			$result = $bot->replyMessage($event['replyToken'], $textMessageBuilder);
 			return $result->getHTTPStatus() . ' ' . $result->getRawBody();
+		
 		}
 	}
+	
 
 });
 
