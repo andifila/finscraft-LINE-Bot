@@ -45,7 +45,22 @@ $app->post('/', function ($request, $response)
 	$data = json_decode($body, true);
 	foreach ($data['events'] as $event)
 	{
-		if($userMessage == "confirm template"){
+		if ($event['type'] == 'message')
+		{
+			if($event['message']['type'] == 'text')
+			{
+				// send same message as reply to user
+				$result = $bot->replyText($event['replyToken'], $event['message']['text']);
+
+				// or we can use pushMessage() instead to send reply message
+				// $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event['message']['text']);
+				// $result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
+				
+				return $result->getHTTPStatus() . ' ' . $result->getRawBody();
+			}
+		}
+		else if($userMessage == "confirm template")
+		{
 			$confirmTemplateBuilder = new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ConfirmTemplateBuilder(
 			   "apakah gw ganteng?",
 			   [
@@ -56,7 +71,7 @@ $app->post('/', function ($request, $response)
 			$templateMessage = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder('nama template', $confirmTemplateBuilder);
 			$result = $bot->replyMessage($event['replyToken'], $templateMessage);
 			return $result->getHTTPStatus() . ' ' . $result->getRawBody();
-			}
+		}
 	}
 
 });
