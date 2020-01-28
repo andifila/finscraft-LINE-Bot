@@ -59,7 +59,7 @@ $app->post('/', function ($request, $response)
 				return $result->getHTTPStatus() . ' ' . $result->getRawBody();
 			}
 		}
-		else if($userMessage == "confirm template")
+		else if($event == "confirm template")
 		{
 			$confirmTemplateBuilder = new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ConfirmTemplateBuilder(
 			   "apakah gw ganteng?",
@@ -70,6 +70,13 @@ $app->post('/', function ($request, $response)
 			   );
 			$templateMessage = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder('nama template', $confirmTemplateBuilder);
 			$result = $bot->replyMessage($event['replyToken'], $templateMessage);
+			return $result->getHTTPStatus() . ' ' . $result->getRawBody();
+		}
+		else if(strtolower($event) == 'halo')
+		{
+			$message = "Halo juga";
+            $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($message);
+			$result = $bot->replyMessage($event['replyToken'], $textMessageBuilder);
 			return $result->getHTTPStatus() . ' ' . $result->getRawBody();
 		}
 	}
