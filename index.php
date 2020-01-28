@@ -48,19 +48,19 @@ $app->post('/', function ($request, $response)
 		$userMessage = $event['message']['text'];
 		if(strtolower($userMessage) == 'halo')
 		{
-			$message = "Halo juga";
+			$message = "Halo juga, apa ada yang bisa saya bantu?";
             $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($message);
 			$result = $bot->replyMessage($event['replyToken'], $textMessageBuilder);
 			return $result->getHTTPStatus() . ' ' . $result->getRawBody();
 		
 		}
-		else if($userMessage == "confirm template")
+		else if($userMessage == "saya mau order")
 		{
 			$confirmTemplateBuilder = new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ConfirmTemplateBuilder(
-			   "apakah gw ganteng?",
+			   "Anda mau order kapan?",
 			   [
-			   new \LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('Ya',"/ya"),
-			   new \LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('Tidak','/tidak'),
+			   new \LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('Sekarang',"/sekarang"),
+			   new \LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('Nanti','/nanti'),
 			   ]
 			   );
 			$templateMessage = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder('nama template', $confirmTemplateBuilder);
