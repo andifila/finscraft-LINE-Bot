@@ -13,9 +13,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-This is a template for the configuration file.
-Make a copy called `application.yml` and change the values below.
-
 line.bot:
   channel-token: 'qI15tamHQ0qWD9n+bzwJtn1aIVny8VPLZM/5ma54yMK2QI31Mt4z299eh3FNoF8kKQssFHfYJTPPPYiQDZpj8fwb/+469GATex64exAV9RtpP3E6UakwDntj3Rzi92Fmk7lad4cXHWQ1OC0khs6YClGUYhWQfeY8sLGRXgo3xvw='
   channel-secret: '2ed01799bbef7a8ebd958880bfc2d265'
